@@ -3,8 +3,15 @@ import { render } from '@testing-library/react';
 import Episodes from './Episodes';
 
 test("Episode is rendering properly", () => {
-    const { getByText } = render(<Episodes />);
+    const { queryByTestId} = render(<Episodes episodes={[]} />);
 
-    const text = getByText("episode")
-    expect(text).toBeInTheDOM();
+    // const text = queryByTestId("episodes")
+    // expect(text).not.toHaveTextContent("episodes");
 })
+
+// test("Episode image is showing", () => {
+//     const { getByAltText } = render(<Episodes />);
+
+//     const altText = getByAltText("{e.name}")
+//     expect(altText).toBeInTheDOM();
+// })
