@@ -2,16 +2,10 @@ import React from "react";
 import { render } from '@testing-library/react';
 import Episodes from './Episodes';
 
-test("Episode is rendering properly", () => {
-    const { queryByTestId} = render(<Episodes episodes={[]} />);
+test('Episode is rendering correctly', () => {
+    const{queryAllByTestId, queryAllByText} = render(<Episodes episodes={[]}/>)
 
-    // const text = queryByTestId("episodes")
-    // expect(text).not.toHaveTextContent("episodes");
+    expect(queryAllByTestId(/episode/i)).toHaveLength(0);
+
+    expect(queryAllByText(/chapter/i)).toHaveLength(0);
 })
-
-// test("Episode image is showing", () => {
-//     const { getByAltText } = render(<Episodes />);
-
-//     const altText = getByAltText("{e.name}")
-//     expect(altText).toBeInTheDOM();
-// })
