@@ -1,21 +1,28 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, wait } from "@testing-library/react";
 import App from "./App";
+import { fetchShow as mockFetchShow } from "./api/fetchShow";
+import { movieData } from "./mockData";
+import userEvent from  '@testing-library/user-event'
 
+jest.mock('./api/fetchShow')
 
-test("App is rendering movie", () => {
-    const { getByText } = render(<App />);
-
-    const text = getByText(/Fetching data.../i);
-    expect(text).toBeInTheDocument();
-});
-
-test('Axios is returning a show', () => {
-    const axios = {
-        get: jest.fn(() => Promise.resolve({data: { episodes: "Season" }})),
-    }
-    const url = 'https://api.tvmaze.com/singlesearch/shows?q=stranger-things&embed=episodes'
-    render(<App url={ url } />)
-    expect(axios.get).toHaveBeenCalledTimes(0)
+test('app is rendering the show', () => {
+    mockFetchShow.mockResolvedValueOnce(movieData);
+    const {getByText} = render(<App />)
+    getByText(/episode/i)
 })
 
+test('after episode is selected correctly renders' , async () => {
+    mockFetchShow.mockResolvedValueOnce(movieData);
+
+    const { getByText } = render(<App />)
+
+    await wait( () => { getByText(/Select a season/i)
+    userEvent.click()
+    const text = getByText(/Season 1/i)
+    expect(text).toBeInTheDocument()
+    userEvent.click(text)
+    getByText(/Season 1, Episode 1/i)
+    })
+})
